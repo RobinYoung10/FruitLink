@@ -89,7 +89,7 @@ var LinkSearch = {
         
         //从stcItem点的坐标依次 y轴向上、y轴向下、x轴向右、x轴向左 扫描有没有一个点能与 destItem 1折连通
         var i;
-        for(i = stcItem.yAxis + 1; i < 11; i++) {
+        for(i = stcItem.yAxis + 1; i < 10; i++) {
             if(this.isEmpty(stcItem.xAxis, i)) {
                 var point1 = {};
                 point1.xAxis = stcItem.xAxis;
@@ -117,7 +117,7 @@ var LinkSearch = {
             }
         }
 
-        for(i = stcItem.xAxis + 1; i < 8; i++) {
+        for(i = stcItem.xAxis + 1; i < 7; i++) {
             if(this.isEmpty(i, stcItem.yAxis)) {
                 var point1 = {};
                 point1.xAxis = i;
