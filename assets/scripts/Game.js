@@ -42,6 +42,11 @@ var Game = cc.Class({
             default: null,
             type: cc.AudioClip
         },
+        //play按钮
+        playButton: {
+            default: null,
+            type: cc.Node
+        },
         //水果1
         item1: {
             default: null,
@@ -82,6 +87,7 @@ var Game = cc.Class({
     // LIFE-CYCLE CALLBACKS:
 
     onLoad: function() {
+        cc.debug.setDisplayStats(false);
         //获取格子节点宽高
         this.gridWidth = this.grid.width;
         this.gridHeight = this.grid.height;
@@ -117,6 +123,7 @@ var Game = cc.Class({
         this.initItems();
         this.initItemArray();
         this.gameoverLabel.string = "";
+        this.playButton.active = false;
         //使节点可用
         this.enabled = true;
     },
@@ -261,7 +268,6 @@ var Game = cc.Class({
                     flag = false;
                     //剩余item组数-1
                     this.itemNumber-=1;
-                    console.log(this.itemNumber);
                     //重置进度条
                     this.progressBar.children[0].width = this.progressBar.width;
                 }
@@ -333,7 +339,7 @@ var Game = cc.Class({
         var progressContent = this.progressBar.children[0].width;
         var progressBlock = this.progressBar.width;
         if(progressContent >= 0) {
-            this.progressBar.children[0].width -= 200 * this.progressSpeed;
+            this.progressBar.children[0].width -= 180 * this.progressSpeed;
             if(this.itemNumber == 0) {
                 cc.audioEngine.playEffect(this.applauseAudio, false);
                 this.getScore(0);
@@ -358,6 +364,7 @@ var Game = cc.Class({
                 }
             }
         }
+        this.playButton.active = true;
         this.score = 0;
         this.progressSpeed = 0.02;
         this.gameoverLabel.string = "Game Over";

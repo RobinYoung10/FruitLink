@@ -23,13 +23,13 @@ cc.Class({
     },
 
     setTouched: function() {
-        this.node.setScale(1.5, 1.5);
+        this.node.setScale(1.3, 1.3);
         var flag = this.game.setSelected(this);
         cc.audioEngine.playEffect(this.selectedAudio, false);
     },
 
     setToucheOff: function() {
-        this.node.setScale(1.2, 1.2);
+        this.node.setScale(1, 1);
         cc.audioEngine.playEffect(this.failAudio, false);
     },
 
