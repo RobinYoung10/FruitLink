@@ -32,6 +32,11 @@ var Game = cc.Class({
             default: null,
             type: cc.Node
         },
+        //背景音效
+        roundAudio: {
+            default: null,
+            type: cc.AudioClip
+        },
         //游戏结束音效
         gameoverAudio: {
             default: null,
@@ -44,6 +49,11 @@ var Game = cc.Class({
         },
         //play按钮
         playButton: {
+            default: null,
+            type: cc.Node
+        },
+        //back按钮
+        backButton: {
             default: null,
             type: cc.Node
         },
@@ -99,10 +109,19 @@ var Game = cc.Class({
         //初始化进度条衰减速度
         this.progressSpeed = 0.02;
         this.gameoverLabel.string = "";
-        this.enabled = false;
+        //初始化背景音乐id
+        this.roundNmuber = -1;
+        this.onStartGame();
+        //绑定back函数
+        this.backButton.on(cc.Node.EventType.TOUCH_START, this.back, this);
     },
 
     onStartGame: function() {
+        console.log(this.roundNmuber);
+        if(this.roundNmuber == -1) {
+            //循环播放背景音乐
+            this.roundNmuber = cc.audioEngine.playEffect(this.roundAudio, true);console.log(this.roundNmuber);
+        }
         //储存选中的item
         this.selectedItem = new Array();
         //声明二维数组实例，用来储存之后的item实例
@@ -149,7 +168,6 @@ var Game = cc.Class({
             //剩余节点数+1
             this.itemNumber++;
         }
-        console.log(this.itemNumber);
     },
 
     //把88个item实例排列进二维数组itemList，并为每一个item设置位置
@@ -352,6 +370,13 @@ var Game = cc.Class({
         }
     },
 
+    //返回函数
+    back: function() {
+        cc.audioEngine.stop(this.roundNmuber);
+        this.enabled = false;
+        cc.director.loadScene("start");
+    },
+
     //游戏失败
     gameOver: function() {
         this.enabled = false;
@@ -360,10 +385,12 @@ var Game = cc.Class({
                 if(this.itemList[i][j] != 0) {
                     this.itemList[i][j].destroy();
                     this.itemList[i][j] = 0;
-                    cc.audioEngine.playEffect(this.gameoverAudio, false);
                 }
             }
         }
+        cc.audioEngine.playEffect(this.gameoverAudio, false);
+        cc.audioEngine.stop(this.roundNmuber);
+        this.roundNmuber = -1;
         this.playButton.active = true;
         this.score = 0;
         this.progressSpeed = 0.02;
